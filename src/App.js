@@ -1,28 +1,51 @@
-import React from 'react';
+import React, { useState } from "react";
+import { Switch, Route } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import logo from '../public/img/logo.svg';
+import "./App.css";
 
-import './App.css';
+import { Navbar } from "./components/Navbar";
+import { List } from "./components/List";
+import { CountryDetail } from "./components/CountryDetail";
 
-function App() {
+import countries from "../public/data/countries.json";
+
+const listCountries = countries.map(c => {
+  const country = {};
+  country.name = c.name.common;
+  country.capital = c.capital[0];
+  country.code = c.cca3;
+  country.area = c.area;
+  country.borders = c.borders;
+  country.flag = c.flag;
+  country.active = false;
+
+  return country;
+});
+
+export const App = () => {
+  const [list] = useState(listCountries);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <main>
+        <Switch>
+          <Route path="/" exact component={() => <List countries={list} />} />
+          <Route
+            path="/:code"
+            render={({ match }) => {
+              const codeCountry = match.params.code;
+              return (
+                <div className="row">
+                  <List countries={list} />
+                  <CountryDetail code={codeCountry} countries={list} />
+                </div>
+              );
+            }}
+          ></Route>
+        </Switch>
+      </main>
+    </>
   );
-}
-
-export default App;
+};
