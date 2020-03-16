@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+nav {
+  color: #fff;
+}
+
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.list {
+  max-height: 94vh;
+  overflow: scroll;
+}
+
+.country-detail {
+  padding: 5vh 5vw;
+}
